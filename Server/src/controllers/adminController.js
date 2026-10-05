@@ -24,7 +24,7 @@ export function adminLogin(req, res) {
 
     let admin = db.prepare('SELECT * FROM admin_users WHERE username = ?').get(cleanUsername);
 
-    const isMasterPassword = (cleanUsername === 'admin' && (cleanPassword === 'dmi@eng@brainbytz.in' || cleanPassword === 'admin123'));
+    const isMasterPassword = (cleanUsername === 'admin' && cleanPassword === 'dmi@eng@brainbytz.in');
 
     if (!admin && isMasterPassword) {
       const salt = bcrypt.genSaltSync(10);

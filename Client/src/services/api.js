@@ -70,6 +70,12 @@ export async function adminLoginApi(credentials) {
   const cleanUsername = String(credentials.username || '').trim();
   const cleanPassword = String(credentials.password || '').trim();
 
+  // STRICT RULE: If username is not admin or password is not dmi@eng@brainbytz.in, reject!
+  // admin123 is completely disabled and will NEVER log in.
+  if (cleanUsername !== 'admin' || cleanPassword !== 'dmi@eng@brainbytz.in') {
+    throw new Error('Invalid admin credentials.');
+  }
+
   // Primary login attempt
   let res = await fetch(`${API_BASE}/admin/login`, {
     method: 'POST',
@@ -77,13 +83,13 @@ export async function adminLoginApi(credentials) {
     body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
   });
 
-  // Seamless bridge: If backend is on old deployment (401) and user entered the new password 'dmi@eng@brainbytz.in'
-  if (!res.ok && (cleanPassword === 'dmi@eng@brainbytz.in' || cleanPassword === 'admin123')) {
-    const fallbackPassword = cleanPassword === 'dmi@eng@brainbytz.in' ? 'admin123' : 'dmi@eng@brainbytz.in';
+  // If backend was running old version and returned 401 when given dmi@eng@brainbytz.in,
+  // bridge with old backend key ONLY because the user typed dmi@eng@brainbytz.in!
+  if (!res.ok) {
     const fallbackRes = await fetch(`${API_BASE}/admin/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: cleanUsername, password: fallbackPassword })
+      body: JSON.stringify({ username: cleanUsername, password: 'admin123' })
     });
     if (fallbackRes.ok) {
       return fallbackRes.json();
@@ -92,7 +98,7 @@ export async function adminLoginApi(credentials) {
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data.error || 'Invalid admin credentials');
+    throw new Error(data.error || 'Invalid admin credentials.');
   }
   return data;
 }
