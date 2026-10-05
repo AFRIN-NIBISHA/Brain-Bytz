@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import { KeyRound, Lock, Shield, Sparkles, Terminal, User } from 'lucide-react';
+import { Eye, EyeOff, KeyRound, Lock, Shield, Sparkles, Terminal, User } from 'lucide-react';
 import { adminLoginApi } from '../services/api';
 
 export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!username.trim() || !password) {
+    const cleanUser = username.trim();
+    const cleanPass = password.trim();
+
+    if (!cleanUser || !cleanPass) {
       setError('Please enter both username and password.');
       return;
     }
@@ -19,7 +23,7 @@ export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
     setError('');
 
     try {
-      const data = await adminLoginApi({ username, password });
+      const data = await adminLoginApi({ username: cleanUser, password: cleanPass });
       onLoginSuccess(data.token, data.admin);
     } catch (err) {
       setError(err.message || 'Invalid username or password.');
@@ -70,8 +74,9 @@ export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin"
+                  placeholder="Enter admin username"
                   required
+                  autoFocus
                   className="w-full pl-10 pr-4 py-3 rounded-xl input-elegant text-sm font-mono text-slate-900 dark:text-white"
                 />
               </div>
@@ -87,13 +92,22 @@ export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
                   <KeyRound className="w-4 h-4" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="Enter admin password"
                   required
-                  className="w-full pl-10 pr-4 py-3 rounded-xl input-elegant text-sm font-mono text-slate-900 dark:text-white"
+                  className="w-full pl-10 pr-11 py-3 rounded-xl input-elegant text-sm font-mono text-slate-900 dark:text-white"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer transition-colors"
+                  tabIndex={-1}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
