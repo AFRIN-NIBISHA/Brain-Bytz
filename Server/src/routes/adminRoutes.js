@@ -25,6 +25,7 @@ router.get('/rankings', verifyAdminToken, getRankings);
 router.get('/participants', verifyAdminToken, getParticipants);
 router.get('/participants/:id', verifyAdminToken, getParticipantDetails);
 router.delete('/participants/:id', verifyAdminToken, deleteParticipant);
+router.post('/delete-participant', verifyAdminToken, deleteParticipant);
 router.get('/analytics', verifyAdminToken, getAnalytics);
 router.put('/settings', verifyAdminToken, updateSettings);
 router.post('/reset-active', verifyAdminToken, resetActiveAttempts);

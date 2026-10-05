@@ -114,12 +114,37 @@ export async function fetchParticipantDetails(token, participantId) {
 }
 
 export async function deleteParticipantApi(token, participantId) {
-  const res = await fetch(`${API_BASE}/admin/participants/${participantId}`, {
+  let res = await fetch(`${API_BASE}/admin/participants/${participantId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${token}` }
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Failed to delete participant');
+
+  // Fallback to POST /delete-participant if DELETE returns 404/405
+  if (res.status === 404 || res.status === 405) {
+    res = await fetch(`${API_BASE}/admin/delete-participant`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ id: participantId })
+    });
+  }
+
+  const text = await res.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    if (!res.ok) {
+      throw new Error(`Backend is still deploying on Render. Please wait 1 minute and try again.`);
+    }
+    return { success: true, message: 'Participant deleted successfully.' };
+  }
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to delete participant.');
+  }
   return data;
 }
 

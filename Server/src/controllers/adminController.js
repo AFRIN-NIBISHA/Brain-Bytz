@@ -405,7 +405,11 @@ export function getParticipantDetails(req, res) {
 // Delete Single Participant and Related Attempts/Answers
 export function deleteParticipant(req, res) {
   try {
-    const { id } = req.params;
+    const id = req.params.id || req.body.id || req.body.participantId;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Participant ID is required.' });
+    }
 
     const participant = db.prepare('SELECT * FROM participants WHERE id = ?').get(id);
     if (!participant) {
