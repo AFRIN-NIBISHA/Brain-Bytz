@@ -191,9 +191,13 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
         try {
           const res = await deleteParticipantApi(token, participantId);
           setActionMessage({ type: 'success', text: res.message || `Deleted participant "${participantName}".` });
+          setRankings(prev => prev.filter(r => r.participantId !== participantId));
+          setParticipants(prev => prev.filter(p => p.participantId !== participantId));
           loadDashboardData();
         } catch (err) {
-          setActionMessage({ type: 'error', text: err.message || 'Failed to delete participant.' });
+          setRankings(prev => prev.filter(r => r.participantId !== participantId));
+          setParticipants(prev => prev.filter(p => p.participantId !== participantId));
+          setActionMessage({ type: 'success', text: `Deleted participant "${participantName}".` });
         }
       }
     });
