@@ -16,8 +16,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Enable CORS for frontend
+const allowedOrigins = [
+  'https://brain-bytz-web.onrender.com',
+  'https://brain-bytz.onrender.com',
+  'http://localhost:3000',
+  'http://localhost:5173'
+];
+
 app.use(cors({
-  origin: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com') || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
