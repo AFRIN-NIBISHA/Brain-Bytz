@@ -34,7 +34,8 @@ import {
   updateAdminSettings, 
   resetActiveAttemptsApi, 
   clearAllDataApi, 
-  downloadResultsCsv 
+  downloadResultsCsv,
+  deleteParticipantApi
 } from '../services/api';
 import ParticipantDetailModal from '../components/ParticipantDetailModal';
 
@@ -181,6 +182,23 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
     });
   };
 
+  const handleDeleteParticipant = (participantId, participantName) => {
+    setConfirmModal({
+      open: true,
+      title: `Delete Participant: ${participantName}?`,
+      message: `Are you sure you want to delete "${participantName}" and all associated quiz attempt data? This will remove them from the Leaderboard and Participants list permanently.`,
+      action: async () => {
+        try {
+          const res = await deleteParticipantApi(token, participantId);
+          setActionMessage({ type: 'success', text: res.message || `Deleted participant "${participantName}".` });
+          loadDashboardData();
+        } catch (err) {
+          setActionMessage({ type: 'error', text: err.message || 'Failed to delete participant.' });
+        }
+      }
+    });
+  };
+
   const handleExportCsv = async () => {
     try {
       await downloadResultsCsv(token);
@@ -225,7 +243,7 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
               </strong>
             </span>
             <span>•</span>
-            <span>Duration: <strong className="text-emerald-800 dark:text-emerald-300">{settings?.durationMinutes || 20} Min</strong></span>
+            <span>Duration: <strong className="text-emerald-800 dark:text-emerald-300">{settings?.durationMinutes || 15} Min</strong></span>
           </div>
         </div>
 
@@ -574,15 +592,24 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
                           </span>
                         </td>
 
-                        {/* Action Audit */}
+                        {/* Action Audit & Delete */}
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            onClick={() => setSelectedParticipantId(r.participantId)}
-                            className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer"
-                            title="View Question Audit Breakdown"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => setSelectedParticipantId(r.participantId)}
+                              className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer"
+                              title="View Question Audit Breakdown"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteParticipant(r.participantId, r.name)}
+                              className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 transition-colors cursor-pointer"
+                              title={`Delete ${r.name}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -617,7 +644,7 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
                   <th className="py-3.5 px-4 text-center">Status</th>
                   <th className="py-3.5 px-4 text-center">Score</th>
                   <th className="py-3.5 px-4 text-center">Time Taken</th>
-                  <th className="py-3.5 px-4 text-right">Audit</th>
+                  <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-emerald-100 dark:divide-emerald-900/60 text-xs font-mono">
@@ -668,13 +695,22 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
                           {p.formattedTimeTaken}
                         </td>
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            onClick={() => setSelectedParticipantId(p.participantId)}
-                            className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer"
-                            title="Inspect participant responses"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => setSelectedParticipantId(p.participantId)}
+                              className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer"
+                              title="Inspect participant responses"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteParticipant(p.participantId, p.name)}
+                              className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 transition-colors cursor-pointer"
+                              title={`Delete ${p.name}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );

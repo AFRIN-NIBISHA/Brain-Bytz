@@ -126,7 +126,7 @@ export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
           </form>
 
           <div className="p-3 rounded-2xl bg-emerald-50/60 dark:bg-[#082218] border border-emerald-200 dark:border-emerald-800 text-[11px] font-mono text-emerald-900/80 dark:text-emerald-400 text-center">
-            Default credentials: <span className="text-emerald-700 dark:text-emerald-300 font-bold">admin</span> / <span className="text-emerald-700 dark:text-emerald-300 font-bold">admin123</span>
+            Credentials: <span className="text-emerald-700 dark:text-emerald-300 font-bold">admin</span> / <span className="text-emerald-700 dark:text-emerald-300 font-bold">dmi@eng@brainbytz.in</span>
           </div>
 
         </div>

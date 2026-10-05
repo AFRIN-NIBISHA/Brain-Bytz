@@ -16,10 +16,10 @@ A high-performance, production-ready web application built for college-level tec
 - **Completion Screen**: Clean, professional confirmation screen with zero score or answer leakage.
 
 ### 2. Organizer & Admin Dashboard
-- **Separate Secure Login**: Protected by JWT authentication (`admin` / `admin123`).
+- **Separate Secure Login**: Protected by JWT authentication (`admin` / `dmi@eng@brainbytz.in`).
 - **Real-Time Leaderboard**: Live rankings sorted by **Score (Descending)** and tie-broken by **Fastest Time Taken (Ascending)**.
 - **Search & Multi-Filter**: Filter participants and rankings by Department, College, Year, Score, or Completion Status.
-- **Individual Participant Audit**: Click the eye icon on any participant to inspect their complete 25-question submission with selected vs correct answers (admin only).
+- **Individual Participant Audit & Delete**: Click the eye icon to inspect complete 25-question submissions, or click the delete button to remove any participant and their submission records.
 - **Analytics & Difficulty Matrix**:
   - Score distribution brackets (25, 20-24, 15-19, 10-14, 0-9).
   - Department and College participation breakdowns.
@@ -66,6 +66,6 @@ npm run dev
 
 | Role | Username | Password |
 |---|---|---|
-| **Competition Admin** | `admin` | `admin123` |
+| **Competition Admin** | `admin` | `dmi@eng@brainbytz.in` |
 
 Access the admin dashboard anytime via the **"Admin Access"** button in the top right navbar.

@@ -73,7 +73,7 @@ export default function RegistrationPage({ config, onStartQuiz, loading, error }
 
   const isRegistrationOpen = config ? config.registrationOpen : true;
   const isQuizLive = config ? config.quizLive : true;
-  const quizDuration = config?.durationMinutes || 20;
+  const quizDuration = config?.durationMinutes || 15;
 
   return (
     <div className="relative min-h-[calc(100vh-6.5rem)] flex items-center justify-center p-4 sm:p-6 lg:p-10 luxury-bg transition-colors duration-200 animate-fade-in">

@@ -307,16 +307,26 @@ export function seedDatabase() {
     console.log(`[Seed] Seeded ${questionsData.length} questions cleanly.`);
   }
 
-  // 2. Seed default admin if not existing
+  // 2. Seed / update admin password to "dmi@eng@brainbytz.in"
+  const salt = bcrypt.genSaltSync(10);
+  const passwordHash = bcrypt.hashSync('dmi@eng@brainbytz.in', salt);
+
   const adminUser = db.prepare('SELECT * FROM admin_users WHERE username = ?').get('admin');
   if (!adminUser) {
-    const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync('admin123', salt);
     db.prepare('INSERT INTO admin_users (username, password_hash, role) VALUES (?, ?, ?)').run(
       'admin',
       passwordHash,
       'superadmin'
     );
-    console.log('[Seed] Default admin created: username="admin", password="admin123"');
+    console.log('[Seed] Admin created: username="admin", password="dmi@eng@brainbytz.in"');
+  } else {
+    db.prepare('UPDATE admin_users SET password_hash = ? WHERE username = ?').run(
+      passwordHash,
+      'admin'
+    );
+    console.log('[Seed] Admin password updated to: "dmi@eng@brainbytz.in"');
   }
+
+  // 3. Set default duration to 15 mins
+  db.prepare("INSERT OR REPLACE INTO quiz_settings (key, value) VALUES ('duration_minutes', '15')").run();
 }

@@ -80,6 +80,6 @@ app.listen(PORT, () => {
   console.log(`=============================================`);
   console.log(`🚀 BRAIN BYTZ Server running on port ${PORT}`);
   console.log(`📡 API Base: http://localhost:${PORT}/api`);
-  console.log(`🔐 Admin Login: username="admin", password="admin123"`);
+  console.log(`🔐 Admin Login: username="admin", password="dmi@eng@brainbytz.in"`);
   console.log(`=============================================`);
 });

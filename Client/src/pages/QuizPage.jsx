@@ -12,7 +12,7 @@ import {
 
 export default function QuizPage({
   questions,
-  durationMinutes = 20,
+  durationMinutes = 15,
   attemptId,
   participant,
   onSubmitQuiz,

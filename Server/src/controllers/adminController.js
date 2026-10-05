@@ -378,6 +378,31 @@ export function getParticipantDetails(req, res) {
   }
 }
 
+// Delete Single Participant and Related Attempts/Answers
+export function deleteParticipant(req, res) {
+  try {
+    const { id } = req.params;
+
+    const participant = db.prepare('SELECT * FROM participants WHERE id = ?').get(id);
+    if (!participant) {
+      return res.status(404).json({ error: 'Participant not found.' });
+    }
+
+    // Delete associated answers and attempts
+    db.prepare('DELETE FROM answers WHERE attempt_id IN (SELECT id FROM quiz_attempts WHERE participant_id = ?)').run(id);
+    db.prepare('DELETE FROM quiz_attempts WHERE participant_id = ?').run(id);
+    db.prepare('DELETE FROM participants WHERE id = ?').run(id);
+
+    return res.json({
+      success: true,
+      message: `Participant "${participant.name}" and all related attempts have been deleted.`
+    });
+  } catch (error) {
+    console.error('Error deleting participant:', error);
+    return res.status(500).json({ error: 'Failed to delete participant.' });
+  }
+}
+
 // Get Analytics (Score distribution, Department/College breakdown, Question performance)
 export function getAnalytics(req, res) {
   try {

@@ -113,6 +113,16 @@ export async function fetchParticipantDetails(token, participantId) {
   return res.json();
 }
 
+export async function deleteParticipantApi(token, participantId) {
+  const res = await fetch(`${API_BASE}/admin/participants/${participantId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to delete participant');
+  return data;
+}
+
 export async function fetchAdminAnalytics(token) {
   const res = await fetch(`${API_BASE}/admin/analytics`, {
     headers: { 'Authorization': `Bearer ${token}` }

@@ -145,7 +145,7 @@ function AppContent() {
     loadConfig();
   };
 
-  const quizDuration = quizConfig?.durationMinutes || 20;
+  const quizDuration = quizConfig?.durationMinutes || 15;
 
   return (
     <div className="min-h-screen bg-[#f4fbf7] dark:bg-[#050d0a] text-slate-900 dark:text-white flex flex-col justify-between selection:bg-emerald-500 selection:text-white transition-colors duration-300">
