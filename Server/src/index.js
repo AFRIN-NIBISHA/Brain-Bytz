@@ -28,6 +28,21 @@ app.use(express.urlencoded({ extended: true }));
 // Initialize DB and Seed Questions & Admin
 seedDatabase();
 
+// API Root & Welcome Route
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    message: '🚀 BRAIN BYTZ Competition Engine API is running live on Render.',
+    symposium: 'XENORAZZ 2K26 • DMI Engineering College',
+    endpoints: {
+      health: '/api/health',
+      quizConfig: '/api/quiz/config',
+      questions: '/api/quiz/questions',
+      adminLogin: '/api/admin/login'
+    }
+  });
+});
+
 // API Routes
 app.use('/api/quiz', quizRoutes);
 app.use('/api/admin', adminRoutes);
