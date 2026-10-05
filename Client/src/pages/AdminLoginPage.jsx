@@ -3,7 +3,7 @@ import { KeyRound, Lock, Shield, Sparkles, Terminal, User } from 'lucide-react';
 import { adminLoginApi } from '../services/api';
 
 export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
-  const [username, setUsername] = useState('admin');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -124,10 +124,6 @@ export default function AdminLoginPage({ onLoginSuccess, onCancel }) {
             </div>
 
           </form>
-
-          <div className="p-3 rounded-2xl bg-emerald-50/60 dark:bg-[#082218] border border-emerald-200 dark:border-emerald-800 text-[11px] font-mono text-emerald-900/80 dark:text-emerald-400 text-center">
-            Credentials: <span className="text-emerald-700 dark:text-emerald-300 font-bold">admin</span> / <span className="text-emerald-700 dark:text-emerald-300 font-bold">dmi@eng@brainbytz.in</span>
-          </div>
 
         </div>
 
