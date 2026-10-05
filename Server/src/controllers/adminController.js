@@ -120,7 +120,7 @@ export function getStats(req, res) {
       settings: {
         registrationOpen: regSetting?.value === 'true',
         quizLive: liveSetting?.value === 'true',
-        durationMinutes: parseInt(durationSetting?.value || '20', 10)
+        durationMinutes: parseInt(durationSetting?.value || '15', 10)
       }
     });
   } catch (error) {

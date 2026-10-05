@@ -88,7 +88,7 @@ export function initDatabase() {
   const defaultSettings = [
     { key: 'registration_open', value: 'true' },
     { key: 'quiz_live', value: 'true' },
-    { key: 'duration_minutes', value: '20' },
+    { key: 'duration_minutes', value: '15' },
     { key: 'college_name', value: 'DMI ENGINEERING COLLEGE' },
     { key: 'college_location', value: 'Kumarapuram Road, Aralvaimozhi, Kanyakumari Dist-629301, Tamil Nadu' },
     { key: 'symposium_title', value: 'XENORAZZ 2K26' },

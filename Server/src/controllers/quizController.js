@@ -16,7 +16,7 @@ export function getQuizConfig(req, res) {
     return res.json({
       registrationOpen: settings.registration_open === 'true',
       quizLive: settings.quiz_live === 'true',
-      durationMinutes: parseInt(settings.duration_minutes || '20', 10),
+      durationMinutes: parseInt(settings.duration_minutes || '15', 10),
       totalQuestions: totalQuestions || 25,
       title: settings.competition_title || 'BRAIN BYTZ',
       subtitle: settings.sub_title || 'Python • C • C++ • Java'
@@ -99,7 +99,7 @@ export function startQuiz(req, res) {
       return res.status(403).json({ error: 'The quiz is not currently active. Please wait for the event organizer.' });
     }
 
-    const durationMinutes = parseInt(durationSetting ? durationSetting.value : '20', 10);
+    const durationMinutes = parseInt(durationSetting ? durationSetting.value : '15', 10);
 
     // Check if participant already exists (match name, college, department)
     const existingParticipant = db.prepare(`

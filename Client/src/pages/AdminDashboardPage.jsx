@@ -928,7 +928,7 @@ export default function AdminDashboardPage({ token, admin, onLogout }) {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold text-emerald-950 dark:text-white">Quiz Duration</span>
                 <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">
-                  Current: {settings?.durationMinutes || 20} Minutes
+                  Current: {settings?.durationMinutes || 15} Minutes
                 </span>
               </div>
               <div className="grid grid-cols-4 gap-2 pt-1">
